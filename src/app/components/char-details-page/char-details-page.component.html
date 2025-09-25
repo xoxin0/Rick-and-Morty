@@ -1,0 +1,89 @@
+<app-header-navbar></app-header-navbar>
+<div class="container-character-details">
+  <div class="button-go-back-container">
+    <app-button-go-back></app-button-go-back>
+  </div>
+
+  <div class="avatar">
+    <img
+      ngSrc="{{ character.image }}"
+      alt="character-image"
+      width="300"
+      height="300"
+      class="character-image"
+    >
+
+    <h1 class="character-name">{{ character.name }}</h1>
+  </div>
+
+  <div class="full-info-container">
+    <div class="information">
+      <p class="info-title">Information</p>
+      <div class="info-list">
+        <div class="info-gender-container row">
+          <h5 class="info-gender-h5 h5">Gender</h5>
+          <p class="info-gender-p p">{{ character.gender }}</p>
+        </div>
+
+        <div class="info-status-container row">
+          <h5 class="info-status-h5 h5">Status</h5>
+          <p class="info-status-p p">{{ character.status }}</p>
+        </div>
+
+        <div class="info-specie-container row">
+          <h5 class="info-specie-h5 h5">Specie</h5>
+          <p class="info-specie-p p">{{ character.species }}</p>
+        </div>
+
+        <div class="info-origin-container row">
+          <h5 class="info-origin-h5 h5">Origin</h5>
+          <p class="info-origin-p p">{{ character.origin.name }}</p>
+        </div>
+
+        <div class="info-type-container row">
+          <h5 class="info-type-h5 h5">Type</h5>
+          <p class="info-type-p p">{{ character.type ? character.type : 'Unknown' }}</p>
+        </div>
+
+        <div
+          class="info-location-container row"
+          (click)="_navigateService.navigateToLocationDetails(locationId)"
+        >
+          <div>
+            <h5 class="info-location-h5 h5">Location</h5>
+            <p class="info-location-p p">{{ character.location.name }}</p>
+          </div>
+
+          <img
+            src="assets/arrow-right.svg"
+            alt="locations-link"
+            class="arrow-right"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="episodes-container">
+      <p class="episodes-title">Episodes</p>
+
+      <div
+        class="episodes-info-list row"
+        *ngFor="let episode of episodesData"
+        (click)="_navigateService.navigateToEpisodeDetails(episode.id)"
+      >
+        <div class="episode-info-container">
+          <h5 class="episode-episode h5">{{ episode.episode }}</h5>
+          <p class="episode-name p">{{ episode.name }}</p>
+          <p class="episode-air_date p">{{ episode.air_date }}</p>
+        </div>
+
+        <img
+          src="assets/arrow-right.svg"
+          alt="episode-link"
+          class="arrow-right"
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

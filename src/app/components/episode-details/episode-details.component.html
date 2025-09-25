@@ -1,0 +1,45 @@
+<app-header-navbar></app-header-navbar>
+<div class="container-episode-details">
+  <div class="button-go-back-container">
+    <app-button-go-back></app-button-go-back>
+  </div>
+
+  <div class="full-info-container">
+    <h1 class="title-info-h1">{{ episode.name }}</h1>
+
+    <div class="episode-air_date-info-container">
+      <div class="episode-info-container">
+        <p class="episode-title">Episode:</p>
+        <p class="episode-p">{{ episode.episode }}</p>
+      </div>
+
+      <div class="air_date-info-container">
+        <p class="air_date-title">Date:</p>
+        <p class="air_date-p">{{ episode.air_date }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="characters-list">
+    <p class="residents-title">Cast</p>
+    <div
+      class="character-container"
+      *ngFor="let character of charactersData"
+      (click)="_navigateService.navigateToCharacterDetails(character.id)"
+    >
+      <div class="character-image">
+        <img
+          ngSrc="{{ character.image }}"
+          alt="character-image"
+          width="240"
+          height="200"
+        >
+      </div>
+      <div class="character-info">
+        <h2 class="character-name">{{ character.name }}</h2>
+        <p class="character-species">{{ character.species }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

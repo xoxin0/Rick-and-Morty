@@ -1,0 +1,47 @@
+<app-header-navbar></app-header-navbar>
+<div class="container-location-details">
+  <div class="button-go-back-container">
+    <app-button-go-back></app-button-go-back>
+  </div>
+
+  <div class="full-info-container">
+    <h1 class="title-info-h1">{{ location.name }}</h1>
+
+    <div class="type-dimension-info-container">
+      <div class="type-info-container">
+        <p class="type-title">Type:</p>
+        <p class="type-p">{{ location.type }}</p>
+      </div>
+
+      <div class="dimension-info-container">
+        <p class="dimension-title">Dimension:</p>
+        <p class="dimension-p">{{ location.dimension }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="characters-list">
+    <p class="residents-title">Residents</p>
+
+    <div
+      class="character-container"
+      *ngFor="let resident of residentsData"
+      (click)="_navigateService.navigateToCharacterDetails(resident.id)"
+    >
+      <div class="character-image">
+        <img
+          ngSrc="{{ resident.image }}"
+          alt="character-image"
+          width="240"
+          height="200"
+        >
+      </div>
+
+      <div class="character-info">
+        <h2 class="character-name">{{ resident.name }}</h2>
+        <p class="character-species">{{ resident.species }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

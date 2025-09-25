@@ -1,0 +1,31 @@
+@use "../../common/style" as *;
+@include locations-and-episodes-styles;
+
+.input-filter-name {
+  width: 500px;
+}
+
+.episode-episode {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.25px;
+  color: darken(#fff, 60%);
+}
+
+@media (max-width: 500px) {
+  .container-episodes-page {
+    .filter-container {
+      .search-box {
+        .input-filter-name {
+          width: 90vw;
+          padding-right: 5px;
+
+          &::placeholder {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}

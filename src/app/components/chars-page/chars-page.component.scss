@@ -1,0 +1,53 @@
+@use "../../common/style" as *;
+@include base-page-styles;
+
+.container-characters-page {
+  .characters-list {
+    @include cards-container-styles;
+
+    .character-container {
+      @include shadow-card-styles;
+      border-radius: 4px;
+      width: 240px;
+
+      &:hover {
+        @include hover-card-styles;
+      }
+
+      .character-image {
+        width: 240px;
+        height: 168px;
+        overflow: hidden;
+      }
+
+      .character-info {
+        @include card-info-styles;
+
+        .character-name {
+          @include name-styles;
+        }
+
+        .character-species {
+          @include description-styles;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1020px) {
+  .container-characters-page {
+    .filter-container {
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .container-characters-page {
+    .character-page-image {
+      width: 300px;
+      height: 100px;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.footer-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  margin-top: 10px;
+
+  .footer-p {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0;
+  }
+}

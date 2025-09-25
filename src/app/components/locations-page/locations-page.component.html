@@ -1,0 +1,71 @@
+<app-header-navbar></app-header-navbar>
+<div class="container-locations-page">
+  <img
+    ngSrc="assets/png-location-page.png"
+    alt="png-char-page"
+    width="326"
+    height="202"
+    priority
+  >
+
+  <div class="filter-container">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Filter by name..."
+        class="input-filter-name"
+        [(ngModel)]="nameFilter"
+        (input)="applyFilters()"
+      >
+    </div>
+
+    <div class="filter-type">
+      <select
+        name="type"
+        [(ngModel)]="typeFilter"
+        (change)="applyFilters()"
+      >
+        <option value="">Type</option>
+        <option value="planet">Planet</option>
+        <option value="cluster">Cluster</option>
+        <option value="space station">Space station</option>
+        <option value="microverse">Microverse</option>
+        <option value="tv">TV</option>
+        <option value="resort">Resort</option>
+        <option value="fantasy town">Fantasy town</option>
+        <option value="dream">Dream</option>
+      </select>
+    </div>
+
+    <div class="filter-dimension">
+      <select
+        name="dimension"
+        [(ngModel)]="dimensionFilter"
+        (change)="applyFilters()"
+      >
+        <option value="">Dimension</option>
+        <option value="dimension C-137">Dimension C-137</option>
+        <option value="unknown">Unknown</option>
+        <option value="post-apocalyptic dimension">Post-Apocalyptic Dimension</option>
+        <option value="replacement dimension">Replacement Dimension</option>
+        <option value="cronenberg dimension">Cronenberg Dimension</option>
+        <option value="fantasy dimension">Fantasy Dimension</option>
+        <option value="dimension 5-126">Dimension 5-126</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="locations-list">
+    <div
+      class="location-container"
+      *ngFor="let location of filteredLocations"
+      (click)="_navigateService.navigateToLocationDetails(location.id)"
+    >
+      <div class="location-info">
+        <h2 class="location-name">{{ location.name }}</h2>
+        <p class="location-type">{{ location.type }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

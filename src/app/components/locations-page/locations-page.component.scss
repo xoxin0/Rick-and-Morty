@@ -1,0 +1,22 @@
+@use "../../common/style" as *;
+@include locations-and-episodes-styles;
+
+.input-filter-name {
+  width: 326px;
+}
+
+@media (max-width: 900px) {
+  .container-locations-page {
+    .filter-container {
+      flex-direction: column;
+      align-items: center;
+
+      .filter-type,
+      .filter-dimension {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

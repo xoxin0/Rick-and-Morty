@@ -1,0 +1,46 @@
+@use "../../common/style" as *;
+@include characters-residents-list-styles;
+
+@media (max-width: 900px) {
+  .container-location-details {
+    gap: 20px;
+
+    .button-go-back-container {
+      top: 0;
+      left: 5%;
+    }
+
+    .full-info-container {
+      margin-top: 40px;
+
+      .title-info-h1 {
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container-location-details {
+    .button-go-back-container {
+      top: 0;
+      left: 0;
+    }
+
+    .full-info-container {
+      .title-info-h1 {
+        align-self: center;
+      }
+
+      .type-dimension-info-container {
+        margin: 0 10px;
+      }
+    }
+
+    .characters-list {
+      .residents-title {
+        position: static;
+      }
+    }
+  }
+}

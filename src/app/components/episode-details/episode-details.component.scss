@@ -1,0 +1,56 @@
+@use "../../common/style" as *;
+@include characters-residents-list-styles;
+
+.episode-air_date-info-container {
+  width: 400px;
+}
+
+@media (max-width: 900px) {
+  .container-episode-details {
+    gap: 20px;
+
+    .button-go-back-container {
+      top: 0;
+      left: 5%;
+    }
+
+    .full-info-container {
+      margin-top: 40px;
+
+      .title-info-h1 {
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container-episode-details {
+    .button-go-back-container {
+      top: 0;
+      left: 0;
+    }
+
+    .full-info-container {
+      .title-info-h1 {
+        width: 80%;
+        align-self: center;
+      }
+
+      .episode-air_date-info-container {
+        width: 300px;
+
+        .episode-info-container,
+        .air_date-info-container {
+          text-align: center;
+        }
+      }
+    }
+
+    .characters-list {
+      .residents-title {
+        position: static;
+      }
+    }
+  }
+}
