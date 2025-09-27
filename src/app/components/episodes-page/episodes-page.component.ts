@@ -13,16 +13,22 @@ import {
 } from '@angular/common';
 
 import {
+  debounceTime, distinctUntilChanged,
   Subject,
   takeUntil
 } from 'rxjs';
+
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 
 import { IEpisodes } from '../../interfaces/IEpisodes';
 import { NavigateService } from '../../services/navigate.service';
 import { IEpisode } from '../../interfaces/IEpisode';
 import { ApiService } from '../../services/api.service';
 import { HeaderNavbarComponent } from '../header-navbar/header-navbar.component';
-import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
 import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.component';
 
@@ -34,7 +40,8 @@ import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.co
     NgForOf,
     NgOptimizedImage,
     FooterComponent,
-    ButtonLoadMoreComponent
+    ButtonLoadMoreComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './episodes-page.component.html',
   styleUrl: './episodes-page.component.scss',
@@ -54,10 +61,11 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
 
   public visibleCount: number = 12;
   public showLoadMore: boolean = false;
-  public nameFilter: string = '';
+  public nameFilterControl = new FormControl('');
 
   public ngOnInit(): void {
     this.loadEpisodes();
+    this.setupNameFilter();
   }
 
   public ngOnDestroy(): void {
@@ -76,19 +84,21 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  public filterByName(): void {
-    this.filteredEpisodes = this.episodes.filter(episode => {
-      return !this.nameFilter ||
-        episode.name.toLowerCase().includes(this.nameFilter.toLowerCase()) ||
-        episode.episode.toLowerCase().includes(this.nameFilter.toLowerCase());
-    });
-
-    this.visibleCount = 12;
+  public onLoadMore(): void {
+    this.visibleCount = this.filteredEpisodes.length;
     this.updateDisplayedEpisodes();
   }
 
-  public onLoadMore(): void {
-    this.visibleCount = this.filteredEpisodes.length;
+  public filterByName(): void {
+    const nameFilter = this.nameFilterControl.value || '';
+
+    this.filteredEpisodes = this.episodes.filter(episode => {
+      return !nameFilter ||
+        episode.name.toLowerCase().includes(nameFilter.toLowerCase()) ||
+        episode.episode.toLowerCase().includes(nameFilter.toLowerCase());
+    });
+
+    this.visibleCount = 12;
     this.updateDisplayedEpisodes();
   }
 
@@ -96,5 +106,17 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
     this.displayedEpisodes = this.filteredEpisodes.slice(0, this.visibleCount);
     this.showLoadMore = this.filteredEpisodes.length > this.visibleCount;
     this._cdr.markForCheck();
+  }
+
+  private setupNameFilter(): void {
+    this.nameFilterControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this._destroy$)
+      )
+      .subscribe(() => {
+        this.filterByName();
+      });
   }
 }

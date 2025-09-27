@@ -13,12 +13,18 @@ import {
 } from '@angular/common';
 
 import {
+  debounceTime, distinctUntilChanged,
   Subject,
   takeUntil
 } from 'rxjs';
 
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+
 import { HeaderNavbarComponent } from "../header-navbar/header-navbar.component";
-import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { NavigateService } from '../../services/navigate.service';
 import { ILocation } from '../../interfaces/ILocation';
@@ -34,7 +40,8 @@ import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.co
     NgOptimizedImage,
     NgForOf,
     FooterComponent,
-    ButtonLoadMoreComponent
+    ButtonLoadMoreComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './locations-page.component.html',
   styleUrl: './locations-page.component.scss',
@@ -54,12 +61,13 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
 
   public visibleCount: number = 8;
   public showLoadMore: boolean = false;
-  public nameFilter: string = '';
+  public nameFilterControl = new FormControl('');
   public typeFilter: string = '';
   public dimensionFilter: string = '';
 
   public ngOnInit(): void {
     this.loadLocations();
+    this.setupNameFilter();
   }
 
   public ngOnDestroy(): void {
@@ -79,9 +87,11 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
   }
 
   public applyFilters(): void {
+    const nameFilter = this.nameFilterControl.value || '';
+
     this.filteredLocations = this.locations.filter(location => {
-      const matchesName = !this.nameFilter ||
-        location.name.toLowerCase().includes(this.nameFilter.toLowerCase());
+      const matchesName = !nameFilter ||
+        location.name.toLowerCase().includes(nameFilter.toLowerCase());
 
       const matchesType = !this.typeFilter ||
         location.type.toLowerCase() === this.typeFilter.toLowerCase();
@@ -105,5 +115,17 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
     this.displayedLocations = this.filteredLocations.slice(0, this.visibleCount);
     this.showLoadMore = this.filteredLocations.length > this.visibleCount;
     this._cdr.markForCheck();
+  }
+
+  private setupNameFilter(): void {
+    this.nameFilterControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this._destroy$)
+      )
+      .subscribe(() => {
+        this.applyFilters();
+      });
   }
 }

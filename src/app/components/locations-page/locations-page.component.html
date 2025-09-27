@@ -14,8 +14,7 @@
         type="text"
         placeholder="Filter by name..."
         class="input-filter-name"
-        [(ngModel)]="nameFilter"
-        (input)="applyFilters()"
+        [formControl]="nameFilterControl"
       >
     </div>
 
