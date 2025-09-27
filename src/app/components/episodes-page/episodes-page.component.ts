@@ -24,6 +24,7 @@ import { ApiService } from '../../services/api.service';
 import { HeaderNavbarComponent } from '../header-navbar/header-navbar.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
+import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.component';
 
 @Component({
   selector: 'app-episodes-page',
@@ -32,7 +33,8 @@ import { FooterComponent } from '../footer/footer.component';
     FormsModule,
     NgForOf,
     NgOptimizedImage,
-    FooterComponent
+    FooterComponent,
+    ButtonLoadMoreComponent
   ],
   templateUrl: './episodes-page.component.html',
   styleUrl: './episodes-page.component.scss',
@@ -48,7 +50,10 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
 
   public episodes: IEpisode[] = [];
   public filteredEpisodes: IEpisode[] = [];
+  public displayedEpisodes: IEpisode[] = [];
 
+  public visibleCount: number = 12;
+  public showLoadMore: boolean = false;
   public nameFilter: string = '';
 
   public ngOnInit(): void {
@@ -67,7 +72,7 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
       ).subscribe((episodes: IEpisodes) => {
       this.episodes = episodes.results;
       this.filteredEpisodes = episodes.results;
-      this._cdr.markForCheck();
+      this.updateDisplayedEpisodes();
     })
   }
 
@@ -78,6 +83,18 @@ export class EpisodesPageComponent implements OnInit, OnDestroy {
         episode.episode.toLowerCase().includes(this.nameFilter.toLowerCase());
     });
 
+    this.visibleCount = 12;
+    this.updateDisplayedEpisodes();
+  }
+
+  public onLoadMore(): void {
+    this.visibleCount = this.filteredEpisodes.length;
+    this.updateDisplayedEpisodes();
+  }
+
+  private updateDisplayedEpisodes(): void {
+    this.displayedEpisodes = this.filteredEpisodes.slice(0, this.visibleCount);
+    this.showLoadMore = this.filteredEpisodes.length > this.visibleCount;
     this._cdr.markForCheck();
   }
 }

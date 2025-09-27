@@ -23,7 +23,7 @@
   <div class="episodes-list">
     <div
       class="episode-container"
-      *ngFor="let episode of filteredEpisodes"
+      *ngFor="let episode of displayedEpisodes"
       (click)="_navigateService.navigateToEpisodeDetails(episode.id)"
     >
       <div class="episode-info">
@@ -33,5 +33,10 @@
       </div>
     </div>
   </div>
+
+  <app-button-load-more
+    [showLoadMore]="showLoadMore"
+    (loadMoreClick)="onLoadMore()"
+  ></app-button-load-more>
 </div>
 <app-footer></app-footer>

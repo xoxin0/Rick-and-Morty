@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import {
-  NgForOf,
+  NgForOf, NgIf,
   NgOptimizedImage
 } from '@angular/common';
 
@@ -27,6 +27,7 @@ import { NavigateService } from '../../services/navigate.service';
 import { ICharacters } from '../../interfaces/ICharacters';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
+import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.component';
 
 @Component({
   selector: 'app-chars-page',
@@ -35,7 +36,8 @@ import { FooterComponent } from '../footer/footer.component';
     NgOptimizedImage,
     NgForOf,
     FormsModule,
-    FooterComponent
+    FooterComponent,
+    ButtonLoadMoreComponent
   ],
   templateUrl: './chars-page.component.html',
   styleUrl: './chars-page.component.scss',
@@ -45,7 +47,10 @@ import { FooterComponent } from '../footer/footer.component';
 export class CharsPageComponent implements OnInit, OnDestroy {
   public characters: ICharacter[] = [];
   public filteredCharacters: ICharacter[] = [];
+  public displayedCharacters: ICharacter[] = [];
 
+  public visibleCount: number = 8;
+  public showLoadMore: boolean = false;
   public nameFilter: string = '';
   public speciesFilter: string = '';
   public genderFilter: string = '';
@@ -73,7 +78,7 @@ export class CharsPageComponent implements OnInit, OnDestroy {
       ).subscribe((characters: ICharacters) => {
         this.characters = characters.results;
         this.filteredCharacters = this.characters;
-        this._cdr.markForCheck();
+        this.updateDisplayedCharacters();
     })
   }
 
@@ -94,6 +99,18 @@ export class CharsPageComponent implements OnInit, OnDestroy {
       return matchesName && matchesSpecies && matchesGender && matchesStatus;
     });
 
+    this.visibleCount = 8;
+    this.updateDisplayedCharacters();
+  }
+
+  public onLoadMore(): void {
+    this.visibleCount = this.filteredCharacters.length;
+    this.updateDisplayedCharacters();
+  }
+
+  private updateDisplayedCharacters(): void {
+    this.displayedCharacters = this.filteredCharacters.slice(0, this.visibleCount);
+    this.showLoadMore = this.filteredCharacters.length > this.visibleCount;
     this._cdr.markForCheck();
   }
 }

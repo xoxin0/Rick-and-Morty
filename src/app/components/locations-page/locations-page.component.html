@@ -58,7 +58,7 @@
   <div class="locations-list">
     <div
       class="location-container"
-      *ngFor="let location of filteredLocations"
+      *ngFor="let location of displayedLocations"
       (click)="_navigateService.navigateToLocationDetails(location.id)"
     >
       <div class="location-info">
@@ -67,5 +67,10 @@
       </div>
     </div>
   </div>
+
+  <app-button-load-more
+    [showLoadMore]="showLoadMore"
+    (loadMoreClick)="onLoadMore()"
+  ></app-button-load-more>
 </div>
 <app-footer></app-footer>

@@ -63,7 +63,7 @@
   <div class="characters-list">
     <div
       class="character-container"
-      *ngFor="let character of filteredCharacters"
+      *ngFor="let character of displayedCharacters"
       (click)="_navigateService.navigateToCharacterDetails(character.id)"
     >
       <div class="character-image">
@@ -81,5 +81,10 @@
       </div>
     </div>
   </div>
+
+  <app-button-load-more
+    [showLoadMore]="showLoadMore"
+    (loadMoreClick)="onLoadMore()"
+  ></app-button-load-more>
 </div>
 <app-footer></app-footer>

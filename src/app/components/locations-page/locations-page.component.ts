@@ -24,6 +24,7 @@ import { NavigateService } from '../../services/navigate.service';
 import { ILocation } from '../../interfaces/ILocation';
 import { ILocations } from '../../interfaces/ILocations';
 import { FooterComponent } from '../footer/footer.component';
+import { ButtonLoadMoreComponent } from '../button-load-more/button-load-more.component';
 
 @Component({
   selector: 'app-locations-page',
@@ -32,7 +33,8 @@ import { FooterComponent } from '../footer/footer.component';
     FormsModule,
     NgOptimizedImage,
     NgForOf,
-    FooterComponent
+    FooterComponent,
+    ButtonLoadMoreComponent
   ],
   templateUrl: './locations-page.component.html',
   styleUrl: './locations-page.component.scss',
@@ -48,7 +50,10 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
 
   public locations: ILocation[] = [];
   public filteredLocations: ILocation[] = [];
+  public displayedLocations: ILocation[] = [];
 
+  public visibleCount: number = 8;
+  public showLoadMore: boolean = false;
   public nameFilter: string = '';
   public typeFilter: string = '';
   public dimensionFilter: string = '';
@@ -69,7 +74,7 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
       ).subscribe((locations: ILocations) => {
       this.locations = locations.results;
       this.filteredLocations = this.locations;
-      this._cdr.markForCheck();
+      this.updateDisplayedCharacters();
     })
   }
 
@@ -87,6 +92,18 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
       return matchesName && matchesType && matchesDimension;
     });
 
+    this.visibleCount = 12;
+    this.updateDisplayedCharacters();
+  }
+
+  public onLoadMore(): void {
+    this.visibleCount = this.filteredLocations.length;
+    this.updateDisplayedCharacters();
+  }
+
+  private updateDisplayedCharacters(): void {
+    this.displayedLocations = this.filteredLocations.slice(0, this.visibleCount);
+    this.showLoadMore = this.filteredLocations.length > this.visibleCount;
     this._cdr.markForCheck();
   }
 }
