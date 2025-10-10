@@ -49,5 +49,15 @@
       width: 300px;
       height: 100px;
     }
+
+    .filter-container {
+      .search-box {
+        width: 240px;
+
+        .input-filter-name {
+          width: 100%;
+        }
+      }
+    }
   }
 }
